@@ -1566,7 +1566,8 @@ class TestClip:
         a = 3 * self._generate_data_complex(self.nr, self.nc)
         m = -0.5
         M = 1.
-        ac = self.fastclip(a, m, M)
+        ac = np.copy(a)
+        ac.real = self.fastclip(ac.real, m, M)
         act = self.clip(a, m, M)
         assert_array_strict_equal(ac, act)
 
@@ -2060,8 +2061,8 @@ class TestClip:
                 base_shape=shape,
                 # Commenting out the min_dims line allows zero-dimensional arrays,
                 # and zero-dimensional arrays containing NaN make the test fail.
-                min_dims=1  
-                            
+                min_dims=1
+
             )
         )
         amin = data.draw(

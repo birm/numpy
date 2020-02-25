@@ -1566,17 +1566,20 @@ class TestClip:
         a = 3 * self._generate_data_complex(self.nr, self.nc)
         m = -0.5
         M = 1.
-        ac = np.copy(a)
-        ac.real = self.fastclip(ac.real, m, M)
-        act = self.clip(a, m, M)
+        act = np.copy(a)
+        act.real = self.clip(a.real, m, M)
+        act.imag = self.clip(a.copy, m, M)
+        ac = self.fastclip(a, m, M)
         assert_array_strict_equal(ac, act)
 
         # Test native input with complex double scalar min/max.
         a = 3 * self._generate_data(self.nr, self.nc)
         m = -0.5 + 1.j
         M = 1. + 2.j
+        act = np.copy(a)
+        act.real = self.clip(a.real, m, M)
+        act.imag = self.clip(a.copy, m, M)
         ac = self.fastclip(a, m, M)
-        act = self.clip(a, m, M)
         assert_array_strict_equal(ac, act)
 
     def test_clip_complex(self):

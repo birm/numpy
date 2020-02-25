@@ -1541,47 +1541,6 @@ class TestClip:
         act = self.clip(a, m, M)
         assert_array_strict_equal(ac, act)
 
-    def test_simple_nonnative(self):
-        # Test non native double input with scalar min/max.
-        # Test native double input with non native double scalar min/max.
-        a = self._generate_non_native_data(self.nr, self.nc)
-        m = -0.5
-        M = 0.6
-        ac = self.fastclip(a, m, M)
-        act = self.clip(a, m, M)
-        assert_array_equal(ac, act)
-
-        # Test native double input with non native double scalar min/max.
-        a = self._generate_data(self.nr, self.nc)
-        m = -0.5
-        M = self._neg_byteorder(0.6)
-        assert_(not M.dtype.isnative)
-        ac = self.fastclip(a, m, M)
-        act = self.clip(a, m, M)
-        assert_array_equal(ac, act)
-
-    def test_simple_complex(self):
-        # Test native complex input with native double scalar min/max.
-        # Test native input with complex double scalar min/max.
-        a = 3 * self._generate_data_complex(self.nr, self.nc)
-        m = -0.5
-        M = 1.
-        act = np.copy(a)
-        act.real = self.clip(a.real, m, M)
-        act.imag = self.clip(a.copy, m, M)
-        ac = self.fastclip(a, m, M)
-        assert_array_strict_equal(ac, act)
-
-        # Test native input with complex double scalar min/max.
-        a = 3 * self._generate_data(self.nr, self.nc)
-        m = -0.5 + 1.j
-        M = 1. + 2.j
-        act = np.copy(a)
-        act.real = self.clip(a.real, m, M)
-        act.imag = self.clip(a.copy, m, M)
-        ac = self.fastclip(a, m, M)
-        assert_array_strict_equal(ac, act)
-
     def test_clip_complex(self):
         # Address Issue gh-5354 for clipping complex arrays
         # Test native complex input without explicit min/max
